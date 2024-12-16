@@ -2,7 +2,7 @@ import CheckIcon from '../assets/icons/check.svg?react'
 import ProgressIcon from '../assets/icons/progress.svg?react'
 import DetailsIcon from '../assets/icons/details.svg?react'
 
-const TaksItem = ({ task }) => {
+const TaksItem = ({ task, handleTaskCheckboxClick }) => {
   const getStatusClasses = () => {
     if (task.status === 'done') {
       return 'bg-[#00ADB5] text-[#00ADB5]'
@@ -28,6 +28,7 @@ const TaksItem = ({ task }) => {
             type="checkbox"
             checked={task.status === 'done'}
             className="absolute h-full w-full cursor-pointer opacity-0"
+            onChange={() => handleTaskCheckboxClick(task.id)}
           />
           {task.status === 'done' && <CheckIcon />}
           {task.status === 'in_progress' && (
