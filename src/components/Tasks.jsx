@@ -8,6 +8,7 @@ import TasksSeparator from './TasksSeparator.jsx'
 import { useState } from 'react'
 import TASKS from '../constants/tasks.js'
 import TaksItem from './TaskItem.jsx'
+import { toast } from 'sonner'
 
 const Tasks = () => {
   const [tasks, setTasks] = useState(TASKS)
@@ -22,12 +23,15 @@ const Tasks = () => {
         return task
       }
       if (task.status === 'not_started') {
+        toast.success('Task started successfully')
         return { ...task, status: 'in_progress' }
       }
       if (task.status === 'in_progress') {
+        toast.success('Task completed successfully')
         return { ...task, status: 'done' }
       }
       if (task.status === 'done') {
+        toast.success('Task reset successfully')
         return { ...task, status: 'not_started' }
       }
       return task
@@ -38,7 +42,9 @@ const Tasks = () => {
   const handleTaskDeleteClick = (taskId) => {
     const newTasks = tasks.filter((task) => task.id !== taskId)
     setTasks(newTasks)
+    toast.success('Task deleted successfully')
   }
+
   return (
     <div className="w-full space-y-6 px-8 py-16">
       <div className="flex w-full justify-between">
