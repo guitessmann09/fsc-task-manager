@@ -1,7 +1,7 @@
 import {
   CheckIcon,
-  ProgressIcon,
   DetailsIcon,
+  ProgressIcon,
   TrashIcon,
 } from '../assets/icons/index.js'
 import Button from './Button'
