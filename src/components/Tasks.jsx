@@ -22,6 +22,12 @@ const Tasks = () => {
   const afternoonTasks = tasks.filter((task) => task.time === 'afternoon')
   const eveningTasks = tasks.filter((task) => task.time === 'evening')
 
+  const handleTaskDeleteClick = (taskId) => {
+    const newTasks = tasks.filter((task) => task.id !== taskId)
+    setTasks(newTasks)
+    toast.success('Task deleted successfully')
+  }
+
   const handleTaskCheckboxClick = (taskId) => {
     const newTasks = tasks.map((task) => {
       if (task.id !== taskId) {
@@ -44,10 +50,9 @@ const Tasks = () => {
     setTasks(newTasks)
   }
 
-  const handleTaskDeleteClick = (taskId) => {
-    const newTasks = tasks.filter((task) => task.id !== taskId)
-    setTasks(newTasks)
-    toast.success('Task deleted successfully')
+  const handleTaskAddSubmit = (task) => {
+    setTasks([...tasks, task])
+    toast.success('Task added successfully')
   }
 
   return (
@@ -71,6 +76,7 @@ const Tasks = () => {
           <AddTaskDialog
             isOpen={addTaskDialogIsOpen}
             handleClose={() => setAddTaskDialogIsOpen(false)}
+            handleSubmit={handleTaskAddSubmit}
           />
         </div>
       </div>

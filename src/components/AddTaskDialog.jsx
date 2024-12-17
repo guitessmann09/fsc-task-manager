@@ -1,15 +1,31 @@
 import './AddTaskDialog.css'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { CSSTransition } from 'react-transition-group'
+import { v4 } from 'uuid'
 
 import Button from './Button'
 import Input from './Input'
 import TimeSelect from './TimeSelect'
 
-const AddTaskDialog = ({ isOpen, handleClose }) => {
+const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
+  const [title, setTitle] = useState()
+  const [time, setTime] = useState('morning')
+  const [description, setDescription] = useState()
   const nodeRef = useRef()
+
+  const handeSaveClick = () => {
+    handleSubmit({
+      id: v4(),
+      title,
+      time,
+      description,
+      status: 'not_started',
+    })
+
+    handleClose()
+  }
 
   return (
     <CSSTransition
@@ -35,12 +51,19 @@ const AddTaskDialog = ({ isOpen, handleClose }) => {
                   id="title"
                   label="Title"
                   placeholder="Enter task title"
+                  value={title}
+                  onChange={(event) => setTitle(event.target.value)}
                 />
-                <TimeSelect />
+                <TimeSelect
+                  value={time}
+                  onChange={(event) => setTime(event.target.value)}
+                />
                 <Input
                   id="description"
                   label="Desceription"
                   placeholder="Describe the task"
+                  value={description}
+                  onChange={(event) => setDescription(event.target.value)}
                 />
                 <div className="flex gap-3">
                   <Button
@@ -51,7 +74,11 @@ const AddTaskDialog = ({ isOpen, handleClose }) => {
                   >
                     Cancel
                   </Button>
-                  <Button size="large" className="w-full">
+                  <Button
+                    size="large"
+                    className="w-full"
+                    onClick={handeSaveClick}
+                  >
                     Save
                   </Button>
                 </div>
