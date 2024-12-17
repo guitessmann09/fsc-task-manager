@@ -6,6 +6,7 @@ import { CSSTransition } from 'react-transition-group'
 
 import Button from './Button'
 import Input from './Input'
+import TimeSelect from './TimeSelect'
 
 const AddTaskDialog = ({ isOpen, handleClose }) => {
   const nodeRef = useRef()
@@ -35,7 +36,7 @@ const AddTaskDialog = ({ isOpen, handleClose }) => {
                   label="Title"
                   placeholder="Enter task title"
                 />
-                <Input id="time" label="Time" placeholder="Time" />
+                <TimeSelect />
                 <Input
                   id="description"
                   label="Desceription"
