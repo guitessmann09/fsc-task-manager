@@ -10,20 +10,44 @@ import Input from './Input'
 import TimeSelect from './TimeSelect'
 
 const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
-  const [title, setTitle] = useState()
+  const [title, setTitle] = useState('')
   const [time, setTime] = useState('morning')
-  const [description, setDescription] = useState()
+  const [description, setDescription] = useState('')
+  const [errors, setErrors] = useState([])
+
   const nodeRef = useRef()
 
   useEffect(() => {
     if (!isOpen) {
       setTitle('')
-      setTime('')
+      setTime('morning')
       setDescription('')
     }
   }, [isOpen])
 
   const handeSaveClick = () => {
+    const newErrors = []
+
+    if (!title.trim()) {
+      newErrors.push({
+        inputName: 'title',
+        message: 'Title is required',
+      })
+    }
+    if (!description.trim()) {
+      newErrors.push({
+        inputName: 'description',
+        message: 'Description is required',
+      })
+    }
+
+    console.log(newErrors)
+
+    if (newErrors.length > 0) {
+      setErrors(newErrors)
+      return
+    }
+
     handleSubmit({
       id: v4(),
       title,
@@ -34,6 +58,11 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
 
     handleClose()
   }
+
+  const titleError = errors.find((error) => error.inputName === 'title')
+  const descriptionError = errors.find(
+    (error) => error.inputName === 'description'
+  )
 
   return (
     <CSSTransition
@@ -61,18 +90,23 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
                   placeholder="Enter task title"
                   value={title}
                   onChange={(event) => setTitle(event.target.value)}
+                  error={titleError}
                 />
+
                 <TimeSelect
                   value={time}
                   onChange={(event) => setTime(event.target.value)}
                 />
+
                 <Input
                   id="description"
                   label="Desceription"
                   placeholder="Describe the task"
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
+                  error={descriptionError}
                 />
+
                 <div className="flex gap-3">
                   <Button
                     size="large"
