@@ -10,23 +10,24 @@ import Input from './Input'
 import TimeSelect from './TimeSelect'
 
 const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
-  const [title, setTitle] = useState('')
   const [time, setTime] = useState('morning')
-  const [description, setDescription] = useState('')
   const [errors, setErrors] = useState([])
 
   const nodeRef = useRef()
+  const titleRef = useRef()
+  const descriptionRef = useRef()
 
   useEffect(() => {
     if (!isOpen) {
-      setTitle('')
       setTime('morning')
-      setDescription('')
     }
   }, [isOpen])
 
   const handeSaveClick = () => {
     const newErrors = []
+
+    const title = titleRef.current.value
+    const description = descriptionRef.current.value
 
     if (!title.trim()) {
       newErrors.push({
@@ -87,9 +88,8 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
                   id="title"
                   label="Title"
                   placeholder="Enter task title"
-                  value={title}
-                  onChange={(event) => setTitle(event.target.value)}
                   error={titleError}
+                  ref={titleRef}
                 />
 
                 <TimeSelect
@@ -101,9 +101,8 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
                   id="description"
                   label="Desceription"
                   placeholder="Describe the task"
-                  value={description}
-                  onChange={(event) => setDescription(event.target.value)}
                   error={descriptionError}
+                  ref={descriptionRef}
                 />
 
                 <div className="flex gap-3">
