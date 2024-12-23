@@ -7,7 +7,7 @@ const Input = forwardRef(({ label, error, ...rest }, ref) => {
     <div className="flex flex-col items-start space-y-1">
       <InputLabel htmlFor={rest.id}>{label}</InputLabel>
       <input
-        className="w-full rounded-lg border border-solid border-[#ECECEC] px-4 py-3 outline-[#00ADB5] transition-all placeholder:text-sm placeholder:text-[#9A9C9F] focus:border-[#00ADB5] focus:outline-none focus:ring-[#00ADB5]"
+        className="w-full rounded-lg border border-solid border-brand-border px-4 py-3 outline-brand-primary transition-all placeholder:text-sm placeholder:text-brand-text-gray focus:border-brand-primary focus:outline-none focus:ring-brand-primary"
         ref={ref}
         {...rest}
       />
