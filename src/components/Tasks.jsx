@@ -39,7 +39,15 @@ const Tasks = () => {
   const afternoonTasks = tasks.filter((task) => task.time === 'afternoon')
   const eveningTasks = tasks.filter((task) => task.time === 'evening')
 
-  const handleTaskDeleteClick = (taskId) => {
+  const handleTaskDeleteClick = async (taskId) => {
+    // chamar a api para deletar a task
+    const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
+      method: 'DELETE',
+    })
+    if (!response.ok) {
+      return toast.error('Failed to delete task')
+    }
+
     const newTasks = tasks.filter((task) => task.id !== taskId)
     setTasks(newTasks)
     toast.success('Task deleted successfully')
@@ -71,7 +79,7 @@ const Tasks = () => {
     // chamar a api para adicionar a task
     const response = await fetch('http://localhost:3000/tasks', {
       method: 'POST',
-      body: JSON.stringify(123),
+      body: JSON.stringify(task),
     })
     if (!response.ok) {
       return toast.error('Failed to add task')

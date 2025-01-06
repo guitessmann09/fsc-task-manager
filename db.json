@@ -41,13 +41,6 @@
       "description": "Sleep",
       "time": "evening",
       "status": "not_started"
-    },
-    {
-      "id": "22696f4d-936c-4130-9763-6a7de2f0d1ac",
-      "title": "teste",
-      "time": "morning",
-      "description": "teste",
-      "status": "not_started"
     }
   ]
 }
