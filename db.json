@@ -1,45 +1,52 @@
 {
   "tasks": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Study",
       "description": "Learn about React Routs",
       "time": "morning",
       "status": "done"
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Read",
       "description": "Read \"Em busca de sentido\"",
       "time": "morning",
       "status": "done"
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Training",
       "description": "Go to the gym",
       "time": "afternoon",
       "status": "in_progress"
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Shopping",
       "description": "Buy ingredients for dinner",
       "time": "afternoon",
       "status": "in_progress"
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Rest",
       "description": "Watch a movie with my girl",
       "time": "evening",
       "status": "not_started"
     },
     {
-      "id": 6,
+      "id": "6",
       "title": "Sleep",
       "description": "Sleep",
       "time": "evening",
+      "status": "not_started"
+    },
+    {
+      "id": "22696f4d-936c-4130-9763-6a7de2f0d1ac",
+      "title": "teste",
+      "time": "morning",
+      "description": "teste",
       "status": "not_started"
     }
   ]
