@@ -1,24 +1,10 @@
 {
   "tasks": [
     {
-      "id": "3d26af4e-adc0-49bc-941a-11b98c05bf39",
-      "title": "Sleep",
-      "time": "evening",
-      "description": "Sleep",
-      "status": "not_started"
-    },
-    {
-      "id": "74fff879-1aec-4e22-943d-9b847f9ab9be",
-      "title": "Rest",
-      "time": "evening",
-      "description": "Watch a movie with my girl",
-      "status": "not_started"
-    },
-    {
-      "id": "11e9de7c-1ba2-4bc5-bc6d-f02d891c7cd4",
-      "title": "teste",
-      "time": "afternoon",
-      "description": "teste",
+      "id": "7adb4a39-3c1e-4f94-b9a7-1a3899c52b4a",
+      "title": "Teste",
+      "time": "morning",
+      "description": "teste 1",
       "status": "not_started"
     }
   ]
