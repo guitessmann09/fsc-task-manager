@@ -3,15 +3,18 @@ import './AddTaskDialog.css'
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { CSSTransition } from 'react-transition-group'
+import { toast } from 'sonner'
 import { v4 } from 'uuid'
 
+import { ProgressIcon } from '../assets/icons'
 import Button from './Button'
 import Input from './Input'
 import TimeSelect from './TimeSelect'
 
-const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
+const AddTaskDialog = ({ isOpen, handleClose, onSubmitSuccess }) => {
   const [time, setTime] = useState('morning')
   const [errors, setErrors] = useState([])
+  const [isLoadig, setIsLoading] = useState(false)
 
   const nodeRef = useRef()
   const titleRef = useRef()
@@ -23,7 +26,7 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
     }
   }, [isOpen])
 
-  const handeSaveClick = () => {
+  const handeSaveClick = async () => {
     const newErrors = []
 
     const title = titleRef.current.value
@@ -48,14 +51,25 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
       return
     }
 
-    handleSubmit({
+    const task = {
       id: v4(),
       title,
       time,
       description,
       status: 'not_started',
+    }
+    setIsLoading(true)
+    const response = await fetch('http://localhost:3000/tasks', {
+      method: 'POST',
+      body: JSON.stringify(task),
     })
+    if (!response.ok) {
+      setIsLoading(false)
+      return toast.error('Failed to add task')
+    }
 
+    onSubmitSuccess(task)
+    setIsLoading(false)
     handleClose()
   }
 
@@ -120,7 +134,11 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
                     size="large"
                     className="w-full"
                     onClick={handeSaveClick}
+                    disabled={isLoadig}
                   >
+                    {isLoadig && (
+                      <ProgressIcon className="h-6 w-6 animate-spin" />
+                    )}
                     Save
                   </Button>
                 </div>
