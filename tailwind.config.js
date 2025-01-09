@@ -17,7 +17,7 @@ export default {
           white: '#FFFFFF',
           background: '#F8F8F8',
           process: '#FFAA04',
-          danger: '#FFAA04',
+          danger: '#EF4444',
         },
       },
     },
