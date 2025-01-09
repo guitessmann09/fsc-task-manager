@@ -70,6 +70,20 @@ const TaskDetailsPage = () => {
     const newTask = await response.json()
     setTask(newTask)
     setSaveIsLoading(false)
+    toast.success('Task edited successfully')
+  }
+
+  const handleDeleteClick = async () => {
+    const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
+      method: 'DELETE',
+    })
+
+    if (!response.ok) {
+      return toast.error('Failed to delete task')
+    }
+
+    toast.success('Task deleted successfully')
+    navigate(-1)
   }
 
   const titleError = errors.find((error) => error.inputName === 'title')
@@ -115,7 +129,11 @@ const TaskDetailsPage = () => {
             <h1 className="mt-2 text-xl font-semibold">{task?.title}</h1>
           </div>
           {/* parte da direita */}
-          <Button className="h-fit self-end" color="danger">
+          <Button
+            className="h-fit self-end"
+            color="danger"
+            onClick={handleDeleteClick}
+          >
             <TrashIcon />
             Delete Task
           </Button>
