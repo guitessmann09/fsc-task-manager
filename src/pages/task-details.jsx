@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'sonner'
 
 import {
   ArrowLeftIcon,
   ChevronRightIcon,
+  ProgressIcon,
   TrashIcon,
 } from '../assets/icons/index.js'
 import Button from '../components/Button'
@@ -14,10 +16,66 @@ import TimeSelect from '../components/TimeSelect.jsx'
 const TaskDetailsPage = () => {
   const { taskId } = useParams()
   const [task, setTask] = useState()
+  const [saveIsLoading, setSaveIsLoading] = useState(false)
+  const [errors, setErrors] = useState([])
   const navigate = useNavigate()
   const handleBackClick = () => {
     navigate(-1)
   }
+
+  const titleRef = useRef()
+  const descriptionRef = useRef()
+  const timeRef = useRef()
+
+  const handeSaveClick = async () => {
+    const newErrors = []
+
+    const title = titleRef.current.value
+    const description = descriptionRef.current.value
+    const time = timeRef.current.value
+
+    if (!title.trim()) {
+      newErrors.push({
+        inputName: 'title',
+        message: 'Title is required',
+      })
+    }
+    if (!description.trim()) {
+      newErrors.push({
+        inputName: 'description',
+        message: 'Description is required',
+      })
+    }
+
+    setErrors(newErrors)
+
+    if (newErrors.length > 0) {
+      return
+    }
+
+    setSaveIsLoading(true)
+    const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        title,
+        time,
+        description,
+      }),
+    })
+    if (!response.ok) {
+      toast.error('An error occurred while saving the task.')
+      return setSaveIsLoading(false)
+    }
+
+    const newTask = await response.json()
+    setTask(newTask)
+    setSaveIsLoading(false)
+  }
+
+  const titleError = errors.find((error) => error.inputName === 'title')
+  const descriptionError = errors.find(
+    (error) => error.inputName === 'description'
+  )
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -46,12 +104,9 @@ const TaskDetailsPage = () => {
               <ArrowLeftIcon />
             </button>
             <div className="flex items-center gap-1 text-xs">
-              <span
-                onClick={handleBackClick}
-                className="cursor-pointer text-brand-text-gray"
-              >
+              <Link to="/" className="cursor-pointer text-brand-text-gray">
                 My Tasks
-              </span>
+              </Link>
               <ChevronRightIcon className="text-brand-text-gray" />
               <span className="font-semibold text-brand-primary">
                 {task?.title}
@@ -69,26 +124,37 @@ const TaskDetailsPage = () => {
         {/* Dados da tarefa */}
         <div className="space-y-6 rounded-xl bg-brand-white p-6">
           <div>
-            <Input id="title" label="Title" value={task?.title} />
+            <Input
+              id="title"
+              label="Title"
+              defaultValue={task?.title}
+              error={titleError}
+              ref={titleRef}
+            />
           </div>
 
           <div>
-            <TimeSelect value={task?.time} />
+            <TimeSelect defaultValue={task?.time} ref={timeRef} />
           </div>
 
           <div>
             <Input
               id="description"
               label="Desceription"
-              value={task?.description}
+              defaultValue={task?.description}
+              error={descriptionError}
+              ref={descriptionRef}
             />
           </div>
         </div>
         <div className="flex w-full justify-end gap-3">
-          <Button size="large" color="secondary">
-            Cancel
-          </Button>
-          <Button size="large" color="primary">
+          <Button
+            size="large"
+            color="primary"
+            onClick={handeSaveClick}
+            disabled={saveIsLoading}
+          >
+            {saveIsLoading && <ProgressIcon className="h-6 w-6 animate-spin" />}
             Save
           </Button>
         </div>

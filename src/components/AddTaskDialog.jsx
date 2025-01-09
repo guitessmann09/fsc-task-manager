@@ -19,6 +19,7 @@ const AddTaskDialog = ({ isOpen, handleClose, onSubmitSuccess }) => {
   const nodeRef = useRef()
   const titleRef = useRef()
   const descriptionRef = useRef()
+  const timeRef = useRef()
 
   useEffect(() => {
     if (!isOpen) {
@@ -31,6 +32,7 @@ const AddTaskDialog = ({ isOpen, handleClose, onSubmitSuccess }) => {
 
     const title = titleRef.current.value
     const description = descriptionRef.current.value
+    const time = timeRef.current.value
 
     if (!title.trim()) {
       newErrors.push({
@@ -112,6 +114,7 @@ const AddTaskDialog = ({ isOpen, handleClose, onSubmitSuccess }) => {
                 <TimeSelect
                   value={time}
                   onChange={(event) => setTime(event.target.value)}
+                  ref={timeRef}
                   disabled={isLoadig}
                 />
 

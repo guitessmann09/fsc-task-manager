@@ -16,22 +16,15 @@
     },
     {
       "id": "81d49c9c-4a1d-4245-8aa5-c823c95bed4a",
-      "title": "teste",
+      "title": "Tarefa teste",
       "time": "morning",
-      "description": "teste",
+      "description": "Testando tarefas",
       "status": "not_started"
     },
     {
       "id": "11e9de7c-1ba2-4bc5-bc6d-f02d891c7cd4",
       "title": "teste",
       "time": "afternoon",
-      "description": "teste",
-      "status": "not_started"
-    },
-    {
-      "id": "264ff91d-4232-473b-bf85-5faecb3a46b3",
-      "title": "teste",
-      "time": "morning",
       "description": "teste",
       "status": "not_started"
     }
