@@ -2,9 +2,23 @@
   "tasks": [
     {
       "id": "7adb4a39-3c1e-4f94-b9a7-1a3899c52b4a",
-      "title": "Teste",
+      "title": "Wake up",
       "time": "morning",
-      "description": "teste 1",
+      "description": "Wake up 8am",
+      "status": "not_started"
+    },
+    {
+      "id": "ccfaccf5-31b1-4503-96a2-7579d4869981",
+      "title": "Read",
+      "time": "evening",
+      "description": "Read \"Em busca de sentido\"",
+      "status": "not_started"
+    },
+    {
+      "id": "1f5d10f6-5bd5-41d2-9e2a-23a0676e26b2",
+      "title": "Study",
+      "time": "afternoon",
+      "description": "Study React Hook Form",
       "status": "not_started"
     }
   ]

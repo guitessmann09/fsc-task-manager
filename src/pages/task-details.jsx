@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
@@ -17,7 +18,8 @@ const TaskDetailsPage = () => {
   const { taskId } = useParams()
   const [task, setTask] = useState()
   const [saveIsLoading, setSaveIsLoading] = useState(false)
-  const [errors, setErrors] = useState([])
+  const { register } = useForm()
+
   const navigate = useNavigate()
   const handleBackClick = () => {
     navigate(-1)
@@ -28,32 +30,11 @@ const TaskDetailsPage = () => {
   const timeRef = useRef()
 
   const handeSaveClick = async () => {
-    const newErrors = []
-
+    setSaveIsLoading(true)
     const title = titleRef.current.value
     const description = descriptionRef.current.value
     const time = timeRef.current.value
 
-    if (!title.trim()) {
-      newErrors.push({
-        inputName: 'title',
-        message: 'Title is required',
-      })
-    }
-    if (!description.trim()) {
-      newErrors.push({
-        inputName: 'description',
-        message: 'Description is required',
-      })
-    }
-
-    setErrors(newErrors)
-
-    if (newErrors.length > 0) {
-      return
-    }
-
-    setSaveIsLoading(true)
     const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
       method: 'PATCH',
       body: JSON.stringify({
@@ -85,11 +66,6 @@ const TaskDetailsPage = () => {
     toast.success('Task deleted successfully')
     navigate(-1)
   }
-
-  const titleError = errors.find((error) => error.inputName === 'title')
-  const descriptionError = errors.find(
-    (error) => error.inputName === 'description'
-  )
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -146,13 +122,17 @@ const TaskDetailsPage = () => {
               id="title"
               label="Title"
               defaultValue={task?.title}
-              error={titleError}
-              ref={titleRef}
+              {...register('title', {
+                required: 'Title is required.',
+              })}
             />
           </div>
 
           <div>
-            <TimeSelect defaultValue={task?.time} ref={timeRef} />
+            <TimeSelect
+              defaultValue={task?.time}
+              {...register('time', { required: 'Time is required.' })}
+            />
           </div>
 
           <div>
@@ -160,8 +140,9 @@ const TaskDetailsPage = () => {
               id="description"
               label="Desceription"
               defaultValue={task?.description}
-              error={descriptionError}
-              ref={descriptionRef}
+              {...register('description', {
+                required: 'Description is required.',
+              })}
             />
           </div>
         </div>
