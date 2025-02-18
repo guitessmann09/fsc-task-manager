@@ -2,7 +2,7 @@ import { forwardRef } from 'react'
 
 import InputLabel from './InputLabel'
 
-const Input = forwardRef(({ label, error, ...rest }, ref) => {
+const Input = forwardRef(({ label, errorMessage, ...rest }, ref) => {
   return (
     <div className="flex flex-col items-start space-y-1">
       <InputLabel htmlFor={rest.id}>{label}</InputLabel>
@@ -11,8 +11,8 @@ const Input = forwardRef(({ label, error, ...rest }, ref) => {
         ref={ref}
         {...rest}
       />
-      {error && (
-        <p className="text-left text-xs text-red-500">{error.message}</p>
+      {errorMessage && (
+        <p className="text-left text-xs text-red-500">{errorMessage}</p>
       )}
     </div>
   )

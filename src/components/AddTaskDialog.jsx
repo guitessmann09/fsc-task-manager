@@ -106,7 +106,7 @@ const AddTaskDialog = ({ isOpen, handleClose, onSubmitSuccess }) => {
                   id="title"
                   label="Title"
                   placeholder="Enter task title"
-                  error={titleError}
+                  errorMessage={titleError?.message}
                   ref={titleRef}
                   disabled={isLoadig}
                 />
@@ -122,7 +122,7 @@ const AddTaskDialog = ({ isOpen, handleClose, onSubmitSuccess }) => {
                   id="description"
                   label="Desceription"
                   placeholder="Describe the task"
-                  error={descriptionError}
+                  errorMessage={descriptionError?.message}
                   ref={descriptionRef}
                   disabled={isLoadig}
                 />

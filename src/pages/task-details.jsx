@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -17,40 +17,32 @@ import TimeSelect from '../components/TimeSelect.jsx'
 const TaskDetailsPage = () => {
   const { taskId } = useParams()
   const [task, setTask] = useState()
-  const [saveIsLoading, setSaveIsLoading] = useState(false)
-  const { register } = useForm()
+  const {
+    register,
+    formState: { errors, isSubmitting },
+    handleSubmit,
+    reset,
+  } = useForm()
 
   const navigate = useNavigate()
   const handleBackClick = () => {
     navigate(-1)
   }
 
-  const titleRef = useRef()
-  const descriptionRef = useRef()
-  const timeRef = useRef()
-
-  const handeSaveClick = async () => {
-    setSaveIsLoading(true)
-    const title = titleRef.current.value
-    const description = descriptionRef.current.value
-    const time = timeRef.current.value
-
+  const handeSaveClick = async (data) => {
     const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
       method: 'PATCH',
       body: JSON.stringify({
-        title,
-        time,
-        description,
+        title: data.title.trim(),
+        description: data.description.trim(),
       }),
     })
     if (!response.ok) {
-      toast.error('An error occurred while saving the task.')
-      return setSaveIsLoading(false)
+      return toast.error('An error occurred while saving the task.')
     }
 
     const newTask = await response.json()
     setTask(newTask)
-    setSaveIsLoading(false)
     toast.success('Task edited successfully')
   }
 
@@ -75,10 +67,11 @@ const TaskDetailsPage = () => {
 
       const data = await response.json()
       setTask(data)
+      reset(data)
     }
 
     fetchTasks()
-  }, [taskId])
+  }, [taskId, reset])
 
   return (
     <div className="flex">
@@ -116,47 +109,63 @@ const TaskDetailsPage = () => {
         </div>
 
         {/* Dados da tarefa */}
-        <div className="space-y-6 rounded-xl bg-brand-white p-6">
-          <div>
-            <Input
-              id="title"
-              label="Title"
-              defaultValue={task?.title}
-              {...register('title', {
-                required: 'Title is required.',
-              })}
-            />
-          </div>
+        <form onSubmit={handleSubmit(handeSaveClick)}>
+          <div className="space-y-6 rounded-xl bg-brand-white p-6">
+            <div>
+              <Input
+                id="title"
+                label="Title"
+                {...register('title', {
+                  required: 'Title is required.',
+                  validate: (value) => {
+                    if (!value.trim()) {
+                      return 'Title cannot be empty.'
+                    }
+                    return true
+                  },
+                })}
+                errorMessage={errors?.title?.message}
+              />
+            </div>
 
-          <div>
-            <TimeSelect
-              defaultValue={task?.time}
-              {...register('time', { required: 'Time is required.' })}
-            />
-          </div>
+            <div>
+              <TimeSelect
+                {...register('time', { required: 'Time is required.' })}
+                errorMessage={errors?.time?.message}
+              />
+            </div>
 
-          <div>
-            <Input
-              id="description"
-              label="Desceription"
-              defaultValue={task?.description}
-              {...register('description', {
-                required: 'Description is required.',
-              })}
-            />
+            <div>
+              <Input
+                id="description"
+                label="Desceription"
+                {...register('description', {
+                  required: 'Description is required.',
+                  validate: (value) => {
+                    if (!value.trim()) {
+                      return 'Description cannot be empty.'
+                    }
+                    return true
+                  },
+                })}
+                errorMessage={errors?.description?.message}
+              />
+            </div>
           </div>
-        </div>
-        <div className="flex w-full justify-end gap-3">
-          <Button
-            size="large"
-            color="primary"
-            onClick={handeSaveClick}
-            disabled={saveIsLoading}
-          >
-            {saveIsLoading && <ProgressIcon className="h-6 w-6 animate-spin" />}
-            Save
-          </Button>
-        </div>
+          <div className="flex w-full justify-end gap-3">
+            <Button
+              size="large"
+              color="primary"
+              disabled={isSubmitting}
+              type="submit"
+            >
+              {isSubmitting && (
+                <ProgressIcon className="h-6 w-6 animate-spin" />
+              )}
+              Save
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   )
