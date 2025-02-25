@@ -20,13 +20,6 @@
       "time": "afternoon",
       "description": "Study React Hook Form",
       "status": "not_started"
-    },
-    {
-      "id": "ff054f7f-54fe-4759-bb8f-473178a9d2a1",
-      "title": "teste",
-      "time": "morning",
-      "description": "teste",
-      "status": "not_started"
     }
   ]
 }

@@ -58,6 +58,16 @@ const AddTaskDialog = ({ isOpen, handleClose, onSubmitSuccess }) => {
       description: '',
     })
   }
+
+  const handleCancelClick = () => {
+    reset({
+      title: '',
+      time: 'morning',
+      description: '',
+    })
+    handleClose()
+  }
+
   return (
     <CSSTransition
       nodeRef={nodeRef}
@@ -132,7 +142,7 @@ const AddTaskDialog = ({ isOpen, handleClose, onSubmitSuccess }) => {
                     size="large"
                     className="w-full"
                     color="secondary"
-                    onClick={handleClose}
+                    onClick={handleCancelClick}
                     type="button"
                   >
                     Cancel
