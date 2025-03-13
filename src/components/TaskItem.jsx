@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
@@ -10,20 +10,30 @@ import {
 } from '../assets/icons/index.js'
 import Button from './Button'
 
-const TaksItem = ({ task, handleCheckboxClick, onDeleteSuccess }) => {
-  const [delteIsLoading, setDeleteIsLoading] = useState(false)
+const TaksItem = ({ task, handleCheckboxClick }) => {
+  const queryClient = useQueryClient()
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['deleteTaks', task.id],
+    mutationFn: async () => {
+      const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
+        method: 'DELETE',
+      })
+      return response.json()
+    },
+  })
 
   const handleDeleteClick = async () => {
-    setDeleteIsLoading(true)
-    const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
-      method: 'DELETE',
+    mutate(undefined, {
+      onSuccess: () => {
+        queryClient.setQueryData('tasks', (oldTasks) => {
+          return oldTasks.filter((oldTask) => oldTask.id !== task.id)
+        })
+        toast.success('Task deleted successfully')
+      },
+      onError: () => {
+        toast.error('Error deleting task!')
+      },
     })
-    if (!response.ok) {
-      setDeleteIsLoading(false)
-      return toast.error('Failed to delete task')
-    }
-    onDeleteSuccess(task.id)
-    setDeleteIsLoading(false)
   }
 
   const getStatusClasses = () => {
@@ -64,9 +74,9 @@ const TaksItem = ({ task, handleCheckboxClick, onDeleteSuccess }) => {
         <Button
           color="ghost"
           onClick={() => handleDeleteClick(task.id)}
-          disabled={delteIsLoading}
+          disabled={isPending}
         >
-          {delteIsLoading ? (
+          {isPending ? (
             <ProgressIcon className="animate-spin text-brand-text-gray" />
           ) : (
             <TrashIcon className="text-brand-text-gray" />

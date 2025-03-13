@@ -1,24 +1,17 @@
 {
   "tasks": [
     {
-      "id": "7adb4a39-3c1e-4f94-b9a7-1a3899c52b4a",
+      "id": "fcbd0fcc-77b6-4807-80f2-030bb73bbb7c",
       "title": "Wake Up",
       "time": "morning",
       "description": "Wake up 8am",
       "status": "not_started"
     },
     {
-      "id": "ccfaccf5-31b1-4503-96a2-7579d4869981",
-      "title": "Read",
-      "time": "evening",
-      "description": "Read \"Em busca de sentido\"",
-      "status": "not_started"
-    },
-    {
-      "id": "1f5d10f6-5bd5-41d2-9e2a-23a0676e26b2",
-      "title": "Study",
-      "time": "afternoon",
-      "description": "Study React Hook Form",
+      "id": "4f3aa84e-65dc-4b43-ab02-a8745c17467c",
+      "title": "teste",
+      "time": "morning",
+      "description": "teste",
       "status": "not_started"
     }
   ]

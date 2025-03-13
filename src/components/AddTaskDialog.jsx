@@ -1,6 +1,7 @@
 import './AddTaskDialog.css'
 
-import { useEffect, useRef, useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useForm } from 'react-hook-form'
 import { CSSTransition } from 'react-transition-group'
@@ -12,8 +13,22 @@ import Button from './Button'
 import Input from './Input'
 import TimeSelect from './TimeSelect'
 
-const AddTaskDialog = ({ isOpen, handleClose, onSubmitSuccess }) => {
-  const [time, setTime] = useState('morning')
+const AddTaskDialog = ({ isOpen, handleClose }) => {
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation({
+    mutationKey: 'addTask',
+    mutationFn: async (task) => {
+      const response = await fetch('http://localhost:3000/tasks', {
+        method: 'POST',
+        body: JSON.stringify(task),
+      })
+      if (!response.ok) {
+        throw new Error()
+      }
+      return response.json()
+    },
+  })
+
   const {
     register,
     formState: { errors, isSubmitting },
@@ -29,12 +44,6 @@ const AddTaskDialog = ({ isOpen, handleClose, onSubmitSuccess }) => {
 
   const nodeRef = useRef()
 
-  useEffect(() => {
-    if (!isOpen) {
-      setTime('morning')
-    }
-  }, [isOpen])
-
   const handleSaveClick = async (data) => {
     const task = {
       id: v4(),
@@ -43,19 +52,21 @@ const AddTaskDialog = ({ isOpen, handleClose, onSubmitSuccess }) => {
       description: data.description.trim(),
       status: 'not_started',
     }
-    const response = await fetch('http://localhost:3000/tasks', {
-      method: 'POST',
-      body: JSON.stringify(task),
-    })
-    if (!response.ok) {
-      return toast.error('Failed to add task')
-    }
-    onSubmitSuccess(task)
-    handleClose()
-    reset({
-      title: '',
-      time: 'morning',
-      description: '',
+
+    mutate(task, {
+      onSuccess: () => {
+        queryClient.setQueryData('tasks', (oldTasks) => {
+          return [...oldTasks, task]
+        })
+        handleClose()
+        reset({
+          title: '',
+          time: 'morning',
+          description: '',
+        })
+        toast.success('Task added successfully')
+      },
+      onError: () => toast.error('Error adding task. Please try again.'),
     })
   }
 
@@ -111,10 +122,8 @@ const AddTaskDialog = ({ isOpen, handleClose, onSubmitSuccess }) => {
                 />
 
                 <TimeSelect
-                  value={time}
-                  errorMessage={errors?.time?.message}
-                  onChange={(event) => setTime(event.target.value)}
                   disabled={isSubmitting}
+                  errorMessage={errors?.time?.message}
                   {...register('time', {
                     required: true,
                   })}

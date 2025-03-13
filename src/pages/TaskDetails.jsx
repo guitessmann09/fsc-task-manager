@@ -9,9 +9,9 @@ import {
   ProgressIcon,
   TrashIcon,
 } from '../assets/icons/index.js'
-import Button from '../components/Button'
+import Button from '../components/Button.jsx'
 import Input from '../components/Input.jsx'
-import Sidebar from '../components/Sidebar'
+import Sidebar from '../components/Sidebar.jsx'
 import TimeSelect from '../components/TimeSelect.jsx'
 
 const TaskDetailsPage = () => {
