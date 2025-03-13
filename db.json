@@ -1,15 +1,8 @@
 {
   "tasks": [
     {
-      "id": "fcbd0fcc-77b6-4807-80f2-030bb73bbb7c",
-      "title": "Wake Up",
-      "time": "morning",
-      "description": "Wake up 8am",
-      "status": "not_started"
-    },
-    {
-      "id": "4f3aa84e-65dc-4b43-ab02-a8745c17467c",
-      "title": "teste",
+      "id": "2ba08bc6-cbed-411a-87e1-0390d2c01c69",
+      "title": "Teste",
       "time": "morning",
       "description": "teste",
       "status": "not_started"
