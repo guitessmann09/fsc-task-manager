@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import api from '../../lib/axios'
+import { api } from '../../lib/axios'
 
 export const useGetTasks = () => {
   return useQuery({
