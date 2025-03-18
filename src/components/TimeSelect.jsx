@@ -2,7 +2,7 @@ import { forwardRef } from 'react'
 
 import InputLabel from './InputLabel'
 
-const TimeSelect = forwardRef(({ props }, ref) => {
+const TimeSelect = forwardRef((props, ref) => {
   return (
     <div className="flex flex-col gap-1 text-left">
       <InputLabel htmlFor="time">Time</InputLabel>
