@@ -19,13 +19,20 @@
       "title": "teste noite",
       "time": "evening",
       "description": "teste noite",
-      "status": "not_started"
+      "status": "in_progress"
     },
     {
       "id": "d16a74da-c3ed-4d59-91c5-84acac7882c4",
       "title": "teste dia",
       "time": "morning",
       "description": "teste dia",
+      "status": "done"
+    },
+    {
+      "id": "feb50718-7134-4ed8-81ff-40d6fc635483",
+      "title": "teste dashboard",
+      "time": "morning",
+      "description": "teste dashboard",
       "status": "not_started"
     }
   ]
