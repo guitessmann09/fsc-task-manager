@@ -8,10 +8,12 @@ import {
   TrashIcon,
 } from '../assets/icons/index.js'
 import { useDeleteTask } from '../hooks/data/use-delete-task.js'
+import { useUpdateTask } from '../hooks/data/use-update-task.js'
 import Button from './Button'
 
-const TaksItem = ({ task, handleCheckboxClick }) => {
+const TaksItem = ({ task }) => {
   const { mutate: deleteTask, isPending } = useDeleteTask(task.id)
+  const { mutate } = useUpdateTask(task.id)
 
   const handleDeleteClick = async () => {
     deleteTask(undefined, {
@@ -37,6 +39,30 @@ const TaksItem = ({ task, handleCheckboxClick }) => {
       return 'bg-brand-dark-blue bg-opacity-5 text-brand-dark-blue'
     }
   }
+
+  const getNewStatus = () => {
+    if (task.status === 'not_started') {
+      return 'in_progress'
+    }
+
+    if (task.status === 'in_progress') {
+      return 'done'
+    }
+    return 'not_started'
+  }
+
+  const handleCheckboxClick = () => {
+    mutate(
+      {
+        status: getNewStatus(),
+      },
+      {
+        onSuccess: () => toast.success('Task status updated successfully.'),
+        onError: () => toast.error('Error updating task status!'),
+      }
+    )
+  }
+
   return (
     <div
       className={`flex items-center justify-between gap-2 rounded-lg bg-opacity-10 px-4 py-3 text-sm ${getStatusClasses()}`}
@@ -49,7 +75,7 @@ const TaksItem = ({ task, handleCheckboxClick }) => {
             type="checkbox"
             checked={task.status === 'done'}
             className="absolute h-full w-full cursor-pointer opacity-0"
-            onChange={() => handleCheckboxClick(task.id)}
+            onChange={handleCheckboxClick}
           />
           {task.status === 'done' && <CheckIcon />}
           {task.status === 'in_progress' && (
