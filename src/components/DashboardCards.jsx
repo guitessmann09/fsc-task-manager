@@ -1,9 +1,4 @@
-import {
-  GlassWaterIcon,
-  ProgressIcon,
-  Tasks2Icon,
-  TasksIcon,
-} from '../assets/icons'
+import { ProgressIcon, Tasks2Icon, TasksIcon } from '../assets/icons'
 import { useGetTasks } from '../hooks/data/use-get-tasks'
 import DashboardCard from './DashboardCard'
 
@@ -15,17 +10,20 @@ const DashboardCards = () => {
   const workingTasks = tasks?.filter(
     (tasks) => tasks.status === 'in_progress'
   ).length
+  const notStartedTasks = tasks?.filter(
+    (tasks) => tasks.status === 'not_started'
+  ).length
   return (
     <div className="grid grid-cols-4 gap-9">
       <DashboardCard
         icon={<Tasks2Icon />}
         mainText={tasks?.length}
-        secondaryText="Avaliable Tasks"
+        secondaryText="Total Tasks"
       />
       <DashboardCard
-        icon={<TasksIcon />}
-        mainText={completedTasks}
-        secondaryText="Completed Tasks"
+        icon={<ProgressIcon />}
+        mainText={notStartedTasks}
+        secondaryText="Not Started Tasks"
       />
       <DashboardCard
         icon={<ProgressIcon />}
@@ -33,9 +31,9 @@ const DashboardCards = () => {
         secondaryText="Working Tasks"
       />
       <DashboardCard
-        icon={<GlassWaterIcon />}
-        mainText="40%"
-        secondaryText="Water"
+        icon={<TasksIcon />}
+        mainText={completedTasks}
+        secondaryText="Completed Tasks"
       />
     </div>
   )

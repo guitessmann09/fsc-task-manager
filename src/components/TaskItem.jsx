@@ -11,7 +11,7 @@ import { useDeleteTask } from '../hooks/data/use-delete-task.js'
 import { useUpdateTask } from '../hooks/data/use-update-task.js'
 import Button from './Button'
 
-const TaksItem = ({ task }) => {
+const TasksItem = ({ task }) => {
   const { mutate: deleteTask, isPending } = useDeleteTask(task.id)
   const { mutate } = useUpdateTask(task.id)
 
@@ -107,4 +107,4 @@ const TaksItem = ({ task }) => {
   )
 }
 
-export default TaksItem
+export default TasksItem
